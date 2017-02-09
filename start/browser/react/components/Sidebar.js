@@ -2,8 +2,9 @@ import React from 'react';
 import { Link } from 'react-router';
 
 const Sidebar = (props) => {
+
   const playlists = props.playlists.map(playlist => {return <li className="playlist-item menu-item" key={playlist.id}>
-                                                <Link to="FILL_ME_IN">{playlist.name}</Link></li>})
+                                                <Link to={`/playlists/${playlist.id}`}>{playlist.name}</Link></li>})
   return (
     <sidebar>
       <img src="juke.svg" className="logo" />
