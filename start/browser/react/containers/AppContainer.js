@@ -23,6 +23,7 @@ export default class AppContainer extends Component {
     this.prev = this.prev.bind(this);
     this.selectAlbum = this.selectAlbum.bind(this);
     this.selectArtist = this.selectArtist.bind(this);
+    this.addPlaylist = this.addPlaylist.bind(this);
   }
 
   componentDidMount () {
@@ -42,7 +43,15 @@ export default class AppContainer extends Component {
       this.setProgress(AUDIO.currentTime / AUDIO.duration));
   }
 
-  onLoad (albums, artists) {
+  addPlaylist(playlistName){
+    axios.post(`/api/playlists`, {name: playlistName})
+    .then(res => res.data)
+    .then(playlist => {
+      this.setState({playlists: [...this.state.playlists, playlist]})
+    });
+  }
+
+  onLoad (albums, artists, playlists) {
     this.setState({
       albums: convertAlbums(albums),
       artists: artists,
@@ -132,13 +141,14 @@ export default class AppContainer extends Component {
       toggleOne: this.toggleOne,
       toggle: this.toggle,
       selectAlbum: this.selectAlbum,
-      selectArtist: this.selectArtist
+      selectArtist: this.selectArtist,
+      addPlaylist: this.addPlaylist
     });
 
     return (
       <div id="main" className="container-fluid">
         <div className="col-xs-2">
-          <Sidebar />
+          <Sidebar playlists={this.state.playlists} addPlaylist={this.addPlaylist} />
         </div>
         <div className="col-xs-10">
         {
